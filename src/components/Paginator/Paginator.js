@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PaginatorItem from './PaginatorItem';
 
-let _page = 1;
-
-const Paginator = ({page, numPages, onPage})=>{
+const Paginator = ({page, numPages, setPage})=>{
   const [preArr, setPreArr] = useState([]);
-  
-  useEffect(()=>{
-    _page = page;
-  },[]);
 
   useEffect(()=>{
     // setLiElms(()=>{
@@ -23,28 +17,24 @@ const Paginator = ({page, numPages, onPage})=>{
     setPreArr(Array(numPages).fill(null));
   },[numPages]);
 
-  const changePage = (page)=>{
-    if(_page===page){
+  const changePage = (_page)=>{
+
+    if(_page>numPages || _page<1){
       return;
     }
 
-    if(page>numPages || page<1){
-      return;
-    }
-
-    _page = page;
-    onPage(page);
+    setPage(_page);
   }
 
   return (
     <nav aria-label="Page navigation example">
       <ul className="pagination">
-        <li className="page-item"><button className="page-link" onClick={()=>changePage(_page-1)}>Previous</button></li>
+        <li className="page-item"><button className="page-link" onClick={()=>changePage(page-1)}>Previous</button></li>
         {preArr.map((_,i)=>{
-          return <PaginatorItem key={i+1} page={_page} i={i+1} onPage={changePage}/>
+          return <PaginatorItem key={i+1} page={page} i={i+1} onPage={setPage}/>
         })}
         
-        <li className="page-item"><button className="page-link" onClick={()=>changePage(_page+1)}>Next</button></li>
+        <li className="page-item"><button className="page-link" onClick={()=>changePage(page+1)}>Next</button></li>
       </ul>
     </nav>
   );

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { fetchBooks, bookAddedToCart } from '../../store/actions';
+import { fetchBooks, bookAddedToCart, setPage } from '../../store/actions';
 import BookListItem from '../BookListItem';
 import Spinner from '../Spinner';
 import ErrorIndicator from '../ErrorIndicator';
@@ -12,9 +12,7 @@ import './book-list.css';
 import Paginator from '../Paginator';
 
 const BookList = ({ books, onAddedToCart }) => {
-  // const onPage = (selectedPage) => {
-  //   console.log('selectedPage = ', selectedPage);
-  // }
+  
   return (
       <ul className="book-list">
         {
@@ -35,35 +33,26 @@ const BookList = ({ books, onAddedToCart }) => {
 
 class BookListContainer extends Component {
 
-  state={
-    _page:0
-  }
-
   componentDidMount() {
     this.props.fetchBooks(this.props.page);
   }
 
-  componentDidUpdate(_, prevState){
-    if(this.state._page===prevState._page){
+  componentDidUpdate(prevProps){
+    if(this.props.page===prevProps.page){
       return;
     }
-    this.props.fetchBooks(this.state._page);
-  }
-
-  onSelectedPage = (page)=>{
-    this.setState({_page:page});
-    //console.log('page = ', page);
-    //this.props.fetchBooks(page);
+    this.props.fetchBooks(this.props.page);
   }
 
   render() {
     const { books, loading, error, isInit, onAddedToCart } = this.props;
-    const {page, numPages, nextPage, prevPage} = this.props;
+    const {page, numPages, nextPage, prevPage, setPage} = this.props;
     const pageInfo = {
       page,
       numPages,
       nextPage,
-      prevPage
+      prevPage,
+      setPage
     };
 
     if(loading && isInit){
@@ -110,6 +99,7 @@ const mapStateToProps = ({ bookList: { books, loading, error, page, numPages, ne
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ 
     fetchBooks,
+    setPage,
     onAddedToCart: bookAddedToCart
   }, dispatch);
 };

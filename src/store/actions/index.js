@@ -20,7 +20,7 @@ const booksError = (error) => {
   };
 };
 
-const setPage = (page)=>{
+export const setPage = (page)=>{
   return {
     type: 'SET_PAGE',
     payload: page
@@ -50,10 +50,10 @@ export const allBooksRemovedFromCart = (bookId) => {
 
 const fetchBooks = (page) => (dispatch, getState) => {
   dispatch(booksRequested());
-  dispatch(setPage(page));
+  console.log('делаю запрос!!');
   fetchBooksReq(page)
     .then((data) => {
-      //console.log('state = ', getState().bookList);
+      //console.log('data = ', data);
       if(getState().bookList.page===data.page){
         dispatch(booksLoaded(data));
       }
