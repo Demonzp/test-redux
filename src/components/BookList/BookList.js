@@ -12,22 +12,22 @@ import './book-list.css';
 import Paginator from '../Paginator';
 
 const BookList = ({ books, onAddedToCart }) => {
-  
+
   return (
-      <ul className="book-list">
-        {
-          books.map((book) => {
-            return (
-              <li key={book.id}>
-                <BookListItem
-                  book={book}
-                  onAddedToCart={() => onAddedToCart(book.id)}
-                />
-              </li>
-            );
-          })
-        }
-      </ul>
+    <ul className="book-list">
+      {
+        books.map((book) => {
+          return (
+            <li key={book.id}>
+              <BookListItem
+                book={book}
+                onAddedToCart={() => onAddedToCart(book.id)}
+              />
+            </li>
+          );
+        })
+      }
+    </ul>
   );
 };
 
@@ -37,8 +37,8 @@ class BookListContainer extends Component {
     this.props.fetchBooks(this.props.page);
   }
 
-  componentDidUpdate(prevProps){
-    if(this.props.page===prevProps.page){
+  componentDidUpdate(prevProps) {
+    if (this.props.page === prevProps.page) {
       return;
     }
     this.props.fetchBooks(this.props.page);
@@ -46,7 +46,7 @@ class BookListContainer extends Component {
 
   render() {
     const { books, loading, error, isInit, onAddedToCart } = this.props;
-    const {page, numPages, nextPage, prevPage, setPage} = this.props;
+    const { page, numPages, nextPage, prevPage, setPage } = this.props;
     const pageInfo = {
       page,
       numPages,
@@ -55,14 +55,18 @@ class BookListContainer extends Component {
       setPage
     };
 
-    if(loading && isInit){
-      return(
+    if (loading && isInit) {
+      return (
         <React.Fragment>
           <Paginator
             {...pageInfo}
             onPage={this.onSelectedPage}
           />
           <Spinner />
+          <Paginator
+            {...pageInfo}
+            onPage={this.onSelectedPage}
+          />
         </React.Fragment>
       );
     }
@@ -81,14 +85,18 @@ class BookListContainer extends Component {
           {...pageInfo}
           onPage={this.onSelectedPage}
         />
-        <BookList 
+        <BookList
           books={books}
           onAddedToCart={onAddedToCart}
+        />
+        <Paginator
+          {...pageInfo}
+          onPage={this.onSelectedPage}
         />
       </React.Fragment>
     );
 
-    
+
   }
 }
 
@@ -97,7 +105,7 @@ const mapStateToProps = ({ bookList: { books, loading, error, page, numPages, ne
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ 
+  return bindActionCreators({
     fetchBooks,
     setPage,
     onAddedToCart: bookAddedToCart
