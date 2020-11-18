@@ -60,12 +60,10 @@ class BookListContainer extends Component {
         <React.Fragment>
           <Paginator
             {...pageInfo}
-            onPage={this.onSelectedPage}
           />
           <Spinner />
           <Paginator
             {...pageInfo}
-            onPage={this.onSelectedPage}
           />
         </React.Fragment>
       );
@@ -83,7 +81,6 @@ class BookListContainer extends Component {
       <React.Fragment>
         <Paginator
           {...pageInfo}
-          onPage={this.onSelectedPage}
         />
         <BookList
           books={books}
@@ -91,7 +88,6 @@ class BookListContainer extends Component {
         />
         <Paginator
           {...pageInfo}
-          onPage={this.onSelectedPage}
         />
       </React.Fragment>
     );
